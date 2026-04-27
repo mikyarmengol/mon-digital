@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon Digital — Informàtica Activa · Manresa · Bages</title>
+  <meta name="description" content="El departament IT que la teva empresa necessita, sense la nòmina. Més de 20 anys a Manresa i el Bages. Resposta en 24h.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --blue-dark: #1A3A6B;
+      --blue-mid:  #2E75B6;
+      --blue-light:#D6E4F0;
+      --orange:    #E8A020;
+      --orange-dk: #C5870F;
+      --bg:        #F5F7FA;
+      --bg-white:  #FFFFFF;
+      --text:      #1A1A2E;
+      --text-muted:#556070;
+      --border:    #E2E8F0;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 22px;
+      --shadow-sm: 0 2px 8px rgba(26,58,107,.07);
+      --shadow-md: 0 8px 32px rgba(26,58,107,.12);
+      --shadow-lg: 0 20px 60px rgba(26,58,107,.16);
+      --font-head: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --max-w:     1200px;
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--bg-white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── UTILITIES ── */
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: var(--radius-sm);
+      font-family: var(--font-body); font-size: 16px; font-weight: 600;
+      cursor: pointer; border: none; transition: all .18s ease;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--orange); color: #fff;
+    }
+    .btn-primary:hover { background: var(--orange-dk); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,160,32,.35); }
+    .btn-secondary {
+      background: transparent; color: var(--blue-dark);
+      border: 2px solid var(--blue-dark);
+    }
+    .btn-secondary:hover { background: var(--blue-dark); color: #fff; }
+    .btn-ghost-white {
+      background: rgba(255,255,255,.15); color: #fff;
+      border: 2px solid rgba(255,255,255,.4);
+    }
+    .btn-ghost-white:hover { background: rgba(255,255,255,.25); }
+    .section-label {
+      display: inline-block; font-size: 13px; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--orange); margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: var(--font-head); font-size: clamp(28px, 4vw, 42px); font-weight: 800;
+      color: var(--blue-dark); line-height: 1.15; margin-bottom: 16px;
+      text-wrap: pretty;
+    }
+    .section-sub {
+      font-size: 18px; color: var(--text-muted); max-width: 580px; line-height: 1.7;
+    }
+
+    /* ── HEADER ── */
+    #header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,255,255,.96); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow .2s;
+    }
+    #header.scrolled { box-shadow: var(--shadow-sm); }
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px; gap: 24px;
+    }
+    .logo-wrap { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .logo-wrap img { height: 44px; width: auto; }
+    nav { display: flex; align-items: center; gap: 4px; }
+    nav a {
+      font-size: 15px; font-weight: 500; color: var(--text-muted);
+      padding: 8px 12px; border-radius: 6px;
+      transition: color .15s, background .15s;
+    }
+    nav a:hover { color: var(--blue-dark); background: var(--bg); }
+    .header-cta { flex-shrink: 0; }
+    .header-cta .btn { padding: 10px 20px; font-size: 14px; }
+    .nav-mobile-btn {
+      display: none; background: none; border: none; cursor: pointer;
+      padding: 8px; color: var(--blue-dark);
+    }
+    .mobile-menu {
+      display: none; position: fixed; top: 68px; left: 0; right: 0; bottom: 0;
+      background: white; z-index: 99; padding: 24px;
+      flex-direction: column; gap: 8px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 18px; font-weight: 600; color: var(--blue-dark);
+      padding: 14px 0; border-bottom: 1px solid var(--border);
+    }
+    .mobile-menu .btn { margin-top: 16px; justify-content: center; width: 100%; }
+
+    /* ── HERO ── */
+    #hero {
+      padding-top: 68px;
+      background: linear-gradient(160deg, #0f2548 0%, var(--blue-dark) 45%, #1e4a8c 100%);
+      min-height: 90vh; display: flex; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    #hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 75% 50%, rgba(46,117,182,.3) 0%, transparent 70%);
+    }
+    .hero-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; align-items: center;
+      padding: 80px 24px;
+      position: relative; z-index: 1;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(232,160,32,.2); border: 1px solid rgba(232,160,32,.4);
+      color: #F5C65A; font-size: 13px; font-weight: 600;
+      padding: 6px 14px; border-radius: 100px; margin-bottom: 24px;
+    }
+    .hero-badge span { width: 6px; height: 6px; border-radius: 50%; background: var(--orange); flex-shrink: 0; }
+    .hero-title {
+      font-family: var(--font-head); font-size: clamp(36px, 5.5vw, 62px); font-weight: 800;
+      color: #fff; line-height: 1.08; margin-bottom: 24px; text-wrap: pretty;
+    }
+    .hero-title em { color: var(--orange); font-style: normal; }
+    .hero-sub {
+      font-size: clamp(17px, 2vw, 20px); color: rgba(255,255,255,.78);
+      line-height: 1.6; margin-bottom: 40px; max-width: 500px;
+    }
+    .hero-btns { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .hero-btns .btn-primary { font-size: 16px; padding: 16px 32px; }
+    .hero-btns .btn-ghost-white { font-size: 16px; padding: 16px 32px; }
+    .hero-visual {
+      display: flex; justify-content: center; align-items: center;
+    }
+    .hero-photo-placeholder {
+      width: 100%; aspect-ratio: 4/3;
+      background: rgba(255,255,255,.08);
+      border: 2px dashed rgba(255,255,255,.25);
+      border-radius: var(--radius-lg);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 16px;
+      color: rgba(255,255,255,.5); text-align: center; padding: 40px;
+    }
+    .hero-photo-placeholder svg { opacity: .4; }
+    .hero-photo-placeholder p { font-size: 14px; line-height: 1.5; }
+    .hero-trust {
+      display: flex; gap: 32px; margin-top: 48px; padding-top: 40px;
+      border-top: 1px solid rgba(255,255,255,.15);
+      flex-wrap: wrap;
+    }
+    .trust-item { text-align: center; }
+    .trust-item strong { display: block; font-size: 28px; font-weight: 800; color: var(--orange); font-family: var(--font-head); }
+    .trust-item span { font-size: 13px; color: rgba(255,255,255,.65); }
+
+    /* ── SOCIAL PROOF BAR ── */
+    #proof-bar {
+      background: var(--blue-dark); color: white;
+      padding: 16px 0;
+    }
+    .proof-inner {
+      display: flex; align-items: center; justify-content: center;
+      gap: 32px; flex-wrap: wrap;
+    }
+    .proof-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 14px; font-weight: 500; color: rgba(255,255,255,.9);
+    }
+    .proof-item .stars { color: #FFD060; letter-spacing: -1px; }
+    .proof-sep { width: 1px; height: 20px; background: rgba(255,255,255,.2); }
+
+    /* ── SECTORS ── */
+    #sectors { padding: 100px 0; background: var(--bg); }
+    .sectors-header { text-align: center; margin-bottom: 60px; }
+    .sectors-header .section-sub { margin: 0 auto; }
+    .sectors-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .sector-card {
+      background: white; border-radius: var(--radius-md);
+      padding: 40px 32px; border: 1px solid var(--border);
+      transition: box-shadow .2s, transform .2s;
+      display: flex; flex-direction: column;
+    }
+    .sector-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); }
+    .sector-icon {
+      width: 56px; height: 56px; border-radius: var(--radius-sm);
+      background: var(--blue-light); display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px;
+    }
+    .sector-icon svg { color: var(--blue-dark); }
+    .sector-card h3 {
+      font-family: var(--font-head); font-size: 20px; font-weight: 700;
+      color: var(--blue-dark); margin-bottom: 12px;
+    }
+    .sector-card p { font-size: 15px; color: var(--text-muted); line-height: 1.65; flex: 1; margin-bottom: 28px; }
+    .sector-cta {
+      font-size: 14px; font-weight: 600; color: var(--blue-mid);
+      display: flex; align-items: center; gap: 6px;
+      transition: gap .15s;
+    }
+    .sector-card:hover .sector-cta { gap: 10px; }
+
+    /* ── PLANS ── */
+    #plans { padding: 100px 0; background: white; }
+    .plans-header { text-align: center; margin-bottom: 60px; }
+    .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start; }
+    .plan-card {
+      border-radius: var(--radius-md); border: 2px solid var(--border);
+      overflow: hidden; transition: box-shadow .2s, transform .2s;
+    }
+    .plan-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .plan-card.featured {
+      border-color: var(--blue-mid);
+      box-shadow: var(--shadow-md);
+    }
+    .plan-badge-wrap { position: relative; }
+    .plan-featured-badge {
+      position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+      background: var(--orange); color: white; font-size: 11px; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase;
+      padding: 5px 16px; border-radius: 0 0 8px 8px;
+    }
+    .plan-head {
+      padding: 36px 28px 24px; background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .plan-card.featured .plan-head { background: var(--blue-dark); color: white; }
+    .plan-name {
+      font-family: var(--font-head); font-size: 22px; font-weight: 800;
+      color: var(--blue-dark); margin-bottom: 8px;
+    }
+    .plan-card.featured .plan-name { color: white; }
+    .plan-hours {
+      font-size: 40px; font-weight: 800; font-family: var(--font-head);
+      color: var(--blue-mid); line-height: 1;
+    }
+    .plan-card.featured .plan-hours { color: var(--orange); }
+    .plan-hours sub { font-size: 16px; font-weight: 500; vertical-align: baseline; }
+    .plan-ideal { font-size: 13px; color: var(--text-muted); margin-top: 8px; }
+    .plan-card.featured .plan-ideal { color: rgba(255,255,255,.65); }
+    .plan-body { padding: 28px; }
+    .plan-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+    .plan-features li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 15px; color: var(--text-muted);
+    }
+    .plan-features li .check {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: #E8F5E9; color: #2E7D32; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; margin-top: 2px;
+    }
+    .plan-features li .cross {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: #FFF3E0; color: #bbb; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; margin-top: 2px;
+    }
+    .plan-sla {
+      background: var(--bg); border-radius: var(--radius-sm); padding: 12px 16px;
+      font-size: 13px; font-weight: 600; color: var(--blue-dark); margin-bottom: 24px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .plan-body .btn { width: 100%; justify-content: center; }
+
+    /* ── WHY ── */
+    #why { padding: 100px 0; background: var(--bg); }
+    .why-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .why-content { }
+    .why-blocks { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 48px; }
+    .why-block {
+      background: white; border-radius: var(--radius-md);
+      padding: 28px; border: 1px solid var(--border);
+    }
+    .why-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: var(--blue-dark); display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .why-block h4 {
+      font-family: var(--font-head); font-size: 17px; font-weight: 700;
+      color: var(--blue-dark); margin-bottom: 8px;
+    }
+    .why-block p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+    .why-visual {
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .why-photo-placeholder {
+      aspect-ratio: 3/4;
+      background: var(--blue-light);
+      border-radius: var(--radius-lg);
+      border: 2px dashed rgba(46,117,182,.3);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 12px;
+      color: var(--blue-mid); padding: 40px; text-align: center;
+    }
+    .why-photo-placeholder p { font-size: 13px; }
+
+    /* ── TESTIMONIALS ── */
+    #testimonials { padding: 100px 0; background: var(--blue-dark); }
+    .testi-header { text-align: center; margin-bottom: 60px; }
+    .testi-header .section-label { color: var(--orange); }
+    .testi-header .section-title { color: white; }
+    .testi-header .section-sub { color: rgba(255,255,255,.65); margin: 0 auto; }
+    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .testi-card {
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius-md); padding: 32px;
+    }
+    .testi-stars { color: #FFD060; font-size: 18px; margin-bottom: 16px; letter-spacing: 2px; }
+    .testi-text { font-size: 16px; color: rgba(255,255,255,.85); line-height: 1.7; margin-bottom: 24px; font-style: italic; }
+    .testi-author { display: flex; align-items: center; gap: 12px; }
+    .testi-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--blue-mid); display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-head); font-weight: 700; font-size: 16px; color: white;
+      flex-shrink: 0;
+    }
+    .testi-name { font-weight: 600; color: white; font-size: 15px; }
+    .testi-company { font-size: 13px; color: rgba(255,255,255,.5); }
+    .google-badge {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      margin-top: 48px; color: rgba(255,255,255,.5); font-size: 14px;
+    }
+
+    /* ── CTA FINAL ── */
+    #cta-final { padding: 100px 0; background: white; }
+    .cta-box {
+      background: linear-gradient(135deg, var(--blue-dark) 0%, #1e4a8c 100%);
+      border-radius: var(--radius-lg); padding: 80px;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-box::before {
+      content: ''; position: absolute;
+      right: -100px; top: -100px;
+      width: 400px; height: 400px; border-radius: 50%;
+      background: rgba(46,117,182,.25);
+    }
+    .cta-box::after {
+      content: ''; position: absolute;
+      left: -80px; bottom: -80px;
+      width: 300px; height: 300px; border-radius: 50%;
+      background: rgba(232,160,32,.1);
+    }
+    .cta-box > * { position: relative; z-index: 1; }
+    .cta-box .section-label { color: var(--orange); }
+    .cta-box h2 {
+      font-family: var(--font-head); font-size: clamp(28px, 4vw, 44px); font-weight: 800;
+      color: white; line-height: 1.15; margin-bottom: 16px; text-wrap: pretty;
+    }
+    .cta-box p { font-size: 18px; color: rgba(255,255,255,.72); margin-bottom: 40px; }
+    .cta-btns { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .btn-whatsapp {
+      background: #25D366; color: white;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: var(--radius-sm);
+      font-size: 16px; font-weight: 600;
+      transition: background .18s, transform .18s;
+    }
+    .btn-whatsapp:hover { background: #1ebe5d; transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    #footer {
+      background: #0f1e38; color: rgba(255,255,255,.65);
+      padding: 64px 0 32px;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px; margin-bottom: 48px;
+    }
+    .footer-brand img { height: 52px; margin-bottom: 16px; filter: brightness(0) invert(1) opacity(.8); }
+    .footer-brand p { font-size: 14px; line-height: 1.7; max-width: 260px; }
+    .footer-brand .contact-items { margin-top: 20px; display: flex; flex-direction: column; gap: 8px; }
+    .contact-item { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+    .contact-item svg { color: var(--orange); flex-shrink: 0; }
+    .footer-col h5 {
+      font-family: var(--font-head); font-weight: 700; font-size: 14px;
+      color: white; margin-bottom: 16px; letter-spacing: .03em;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul li a { font-size: 14px; transition: color .15s; }
+    .footer-col ul li a:hover { color: white; }
+    .footer-map {
+      background: var(--blue-dark); border-radius: var(--radius-sm);
+      height: 120px; display: flex; align-items: center; justify-content: center;
+      font-size: 13px; color: rgba(255,255,255,.4); margin-top: 16px;
+      border: 1px dashed rgba(255,255,255,.15); gap: 8px;
+    }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 28px; display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: gap; gap: 16px;
+    }
+    .footer-bottom p { font-size: 13px; }
+    .footer-socials { display: flex; gap: 12px; }
+    .social-btn {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: rgba(255,255,255,.08); display: flex; align-items: center; justify-content: center;
+      transition: background .15s;
+    }
+    .social-btn:hover { background: rgba(255,255,255,.16); }
+    .legal-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .legal-links a { font-size: 13px; transition: color .15s; }
+    .legal-links a:hover { color: white; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .sectors-grid, .plans-grid { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; }
+      .why-inner { grid-template-columns: 1fr; }
+      .why-visual { display: none; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      nav { display: none; }
+      .header-cta { display: none; }
+      .nav-mobile-btn { display: flex; }
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .hero-visual { display: none; }
+      .hero-trust { gap: 20px; justify-content: center; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .cta-box { padding: 48px 28px; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .sectors-grid, .plans-grid { max-width: 100%; }
+      .why-blocks { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .hero-btns { flex-direction: column; }
+      .hero-btns .btn { width: 100%; justify-content: center; }
+      .cta-btns { flex-direction: column; }
+      .cta-btns .btn, .cta-btns .btn-whatsapp { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════ HEADER ═══════════════════════════════════ -->
+<header id="header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="#" class="logo-wrap">
+        <img src="assets/logo.png" alt="Mon Digital — Informàtica Activa">
+      </a>
+      <nav>
+        <a href="#sectors">Serveis</a>
+        <a href="#plans">Plans Activa</a>
+        <a href="#sectors">Sectors</a>
+        <a href="#why">Sobre nosaltres</a>
+        <a href="#cta-final">Contacte</a>
+      </nav>
+      <div class="header-cta">
+        <a href="#cta-final" class="btn btn-primary">Revisió IT gratuïta</a>
+      </div>
+      <button class="nav-mobile-btn" onclick="toggleMobileMenu()" aria-label="Menú">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#sectors" onclick="toggleMobileMenu()">Serveis</a>
+  <a href="#plans" onclick="toggleMobileMenu()">Plans Activa</a>
+  <a href="#sectors" onclick="toggleMobileMenu()">Sectors</a>
+  <a href="#why" onclick="toggleMobileMenu()">Sobre nosaltres</a>
+  <a href="#cta-final" onclick="toggleMobileMenu()">Contacte</a>
+  <a href="#cta-final" class="btn btn-primary" onclick="toggleMobileMenu()">Revisió IT gratuïta</a>
+</div>
+
+<!-- ═══════════════════════════════════ HERO ════════════════════════════════════ -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="hero-badge">
+          <span></span>
+          IT extern per a pymes del Bages
+        </div>
+        <h1 class="hero-title">
+          No venem tecnologia.<br>
+          Venem <em>tranquil·litat</em> operativa.
+        </h1>
+        <p class="hero-sub">
+          Som el departament IT que la teva empresa necessita, sense la nòmina. Més de 20 anys resolent problemes reals a Manresa i el Bages.
+        </p>
+        <div class="hero-btns">
+          <a href="#cta-final" class="btn btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.5 10.78 19.79 19.79 0 01.43 2.18 2 2 0 012.42 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.07 6.07l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"></path></svg>
+            Demana la teva Revisió IT gratuïta
+          </a>
+          <a href="#plans" class="btn btn-ghost-white">
+            Descobreix els Plans Activa
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+          </a>
+        </div>
+        <div class="hero-trust">
+          <div class="trust-item">
+            <strong>4,6/5</strong>
+            <span>★ Google Reviews</span>
+          </div>
+          <div class="trust-item">
+            <strong>95+</strong>
+            <span>Ressenyes verificades</span>
+          </div>
+          <div class="trust-item">
+            <strong>20+</strong>
+            <span>Anys d'experiència</span>
+          </div>
+          <div class="trust-item">
+            <strong>&lt;24h</strong>
+            <span>Temps de resposta</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-photo-placeholder">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="8" r="4"></circle><path d="M6 20v-2a6 6 0 0112 0v2"></path>
+            <circle cx="18" cy="8" r="3"></circle><path d="M21 20v-1.5a4.5 4.5 0 00-3-4.24"></path>
+          </svg>
+          <p><strong>Foto de l'equip</strong><br>Francesc Romera + Xavier Coll<br><em>a substituir per foto real</em></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ SECTORS ════════════════════════════════ -->
+<section id="sectors">
+  <div class="container">
+    <div class="sectors-header">
+      <span class="section-label">Solucions per sector</span>
+      <h2 class="section-title">IT fet a mida per al teu tipus de negoci</h2>
+      <p class="section-sub">No tothom té les mateixes necessitats. Coneixem el Bages i sabem com treballa cada sector.</p>
+    </div>
+    <div class="sectors-grid">
+
+      <!-- Sector 1 -->
+      <div class="sector-card">
+        <div class="sector-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="7" width="20" height="14" rx="2"></rect>
+            <path d="M16 7V5a2 2 0 00-4 0v2M8 7V5a2 2 0 014 0v2M12 12v5M9.5 14.5h5"></path>
+          </svg>
+        </div>
+        <h3>Indústria i manufactura</h3>
+        <p>Empreses industrials del Bages que no es poden permetre parades. Mantenim els vostres equips i xarxes a punt perquè la cadena de producció no s'aturi.</p>
+        <p style="font-size:13px; color: var(--text-muted); margin-bottom:16px; border-left: 3px solid var(--orange); padding-left: 10px; margin-top:8px;">
+          Servidors · Còpies de seguretat · VPN industrial · Manteniment preventiu
+        </p>
+        <a href="#cta-final" class="sector-cta">
+          Explora solucions per al teu sector
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+        </a>
+      </div>
+
+      <!-- Sector 2 -->
+      <div class="sector-card">
+        <div class="sector-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 01-8 0"></path>
+          </svg>
+        </div>
+        <h3>Comerç i hosteleria</h3>
+        <p>TPV, WiFi per a clients, gestió de reserves i caixa integrada. Fem que la tecnologia treballi per vosaltres a la botiga o al restaurant, sense complicacions.</p>
+        <p style="font-size:13px; color: var(--text-muted); margin-bottom:16px; border-left: 3px solid var(--orange); padding-left: 10px; margin-top:8px;">
+          TPV · WiFi · Caixa integrada · Suport ràpid en horari comercial
+        </p>
+        <a href="#cta-final" class="sector-cta">
+          Explora solucions per al teu sector
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+        </a>
+      </div>
+
+      <!-- Sector 3 -->
+      <div class="sector-card">
+        <div class="sector-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+        </div>
+        <h3>Despatxos i serveis professionals</h3>
+        <p>Gestories, assessories, clíniques i despatxos professionals que necessiten confidencialitat, RGPD i continuïtat del servei al client cada dia.</p>
+        <p style="font-size:13px; color: var(--text-muted); margin-bottom:16px; border-left: 3px solid var(--orange); padding-left: 10px; margin-top:8px;">
+          RGPD · Cloud segur · Còpies de seguretat · Microsoft 365
+        </p>
+        <a href="#cta-final" class="sector-cta">
+          Explora solucions per al teu sector
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ PLANS ══════════════════════════════════ -->
+<section id="plans">
+  <div class="container">
+    <div class="plans-header">
+      <span class="section-label">Plans Activa</span>
+      <h2 class="section-title">IT sense sorpreses, amb preu tancat</h2>
+      <p class="section-sub">Tria el pla que s'adapta al teu negoci. Sense hores extra ocultes, sense factures que no esperes.</p>
+    </div>
+    <div class="plans-grid">
+
+      <!-- Essencial -->
+      <div class="plan-card">
+        <div class="plan-head">
+          <div class="plan-name">Essencial</div>
+          <div class="plan-hours">5 <sub>h/mes</sub></div>
+          <div class="plan-ideal">Ideal per a negocis petits i autònoms</div>
+        </div>
+        <div class="plan-body">
+          <ul class="plan-features">
+            <li><span class="check">✓</span> 5 hores mensuals d'assistència IT</li>
+            <li><span class="check">✓</span> Suport remot i telefònic</li>
+            <li><span class="check">✓</span> Manteniment preventiu bàsic</li>
+            <li><span class="check">✓</span> Còpies de seguretat supervisades</li>
+            <li><span class="cross">—</span> Visita presencial inclosa</li>
+            <li><span class="cross">—</span> SLA prioritari</li>
+          </ul>
+          <div class="plan-sla">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
+            Resposta en 24h laborables
+          </div>
+          <a href="#cta-final" class="btn btn-secondary">Parla amb nosaltres</a>
+        </div>
+      </div>
+
+      <!-- Pro (featured) -->
+      <div class="plan-card featured">
+        <div class="plan-badge-wrap">
+          <div class="plan-featured-badge">Més popular</div>
+        </div>
+        <div class="plan-head">
+          <div class="plan-name">Pro</div>
+          <div class="plan-hours">10 <sub>h/mes</sub></div>
+          <div class="plan-ideal">Per a pymes de 5 a 25 treballadors</div>
+        </div>
+        <div class="plan-body">
+          <ul class="plan-features">
+            <li><span class="check">✓</span> 10 hores mensuals d'assistència IT</li>
+            <li><span class="check">✓</span> Suport remot, telefònic i presencial</li>
+            <li><span class="check">✓</span> Manteniment preventiu complet</li>
+            <li><span class="check">✓</span> Còpies de seguretat + monitoratge</li>
+            <li><span class="check">✓</span> 1 visita presencial mensual inclosa</li>
+            <li><span class="check">✓</span> Gestió RGPD bàsica inclosa</li>
+          </ul>
+          <div class="plan-sla" style="background: rgba(255,255,255,.1); color: rgba(255,255,255,.9);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+            Resposta prioritària en 4h
+          </div>
+          <a href="#cta-final" class="btn btn-primary">Parla amb nosaltres</a>
+        </div>
+      </div>
+
+      <!-- Empresa -->
+      <div class="plan-card">
+        <div class="plan-head">
+          <div class="plan-name">Empresa</div>
+          <div class="plan-hours">25 <sub>h/mes</sub></div>
+          <div class="plan-ideal">Per a empreses de 25 a 100 treballadors</div>
+        </div>
+        <div class="plan-body">
+          <ul class="plan-features">
+            <li><span class="check">✓</span> 25 hores mensuals d'assistència IT</li>
+            <li><span class="check">✓</span> Suport presencial il·limitat</li>
+            <li><span class="check">✓</span> Manteniment i monitoratge 24/7</li>
+            <li><span class="check">✓</span> Còpies de seguretat avançades</li>
+            <li><span class="check">✓</span> RGPD, ciberseguretat i ENS</li>
+            <li><span class="check">✓</span> Interlocutor IT dedicat</li>
+          </ul>
+          <div class="plan-sla">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            SLA personalitzat
+          </div>
+          <a href="#cta-final" class="btn btn-secondary">Parla amb nosaltres</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ WHY ════════════════════════════════════ -->
+<section id="why">
+  <div class="container">
+    <div class="why-inner">
+      <div class="why-content">
+        <span class="section-label">Per què Mon Digital</span>
+        <h2 class="section-title">L'IT extern que actua com si fos el teu</h2>
+        <p class="section-sub">No som un call center, ni una gran integradora. Som Francesc i Xavier, i coneixem el teu negoci pel seu nom.</p>
+        <div class="why-blocks">
+
+          <div class="why-block">
+            <div class="why-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+              </svg>
+            </div>
+            <h4>Resposta en 24h</h4>
+            <p>Cada hora parada et costa diners. Per això garantim resposta en menys de 24 hores, sigui el que sigui.</p>
+          </div>
+
+          <div class="why-block">
+            <div class="why-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                <line x1="1" y1="10" x2="23" y2="10"></line>
+              </svg>
+            </div>
+            <h4>Pressupost tancat</h4>
+            <p>Sense sorpreses a final de mes. El preu que acordem és el preu que pagues. Sempre.</p>
+          </div>
+
+          <div class="why-block">
+            <div class="why-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+            <h4>Venim a casa teva</h4>
+            <p>Som de Manresa i cobrim tot el Bages. Si ho necessites, anem a la teva empresa. En persona.</p>
+          </div>
+
+          <div class="why-block">
+            <div class="why-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <h4>20 anys al Bages</h4>
+            <p>Coneixem el teixit empresarial de la comarca. Fa 20 anys que resolem problemes reals a empreses reals.</p>
+          </div>
+
+        </div>
+      </div>
+      <div class="why-visual">
+        <div class="why-photo-placeholder">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="3" width="20" height="14" rx="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+          <p><strong>Foto de l'oficina</strong><br>Francesc + Xavier<br><em>a substituir per foto real</em></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ TESTIMONIALS ═══════════════════════════ -->
+<section id="testimonials">
+  <div class="container">
+    <div class="testi-header">
+      <span class="section-label">Ressenyes reals de Google</span>
+      <h2 class="section-title">El que diuen les empreses del Bages</h2>
+      <p class="section-sub">Més de 95 ressenyes verificades. Paraula del client, no nostra.</p>
+    </div>
+    <div class="testi-grid">
+
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Truquem i en menys de 24 hores ja tenim solució. Porten el nostre IT com si fossin part de l'empresa. Sense argot, sense sorpreses a la factura."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">MR</div>
+          <div>
+            <div class="testi-name">M. Roca</div>
+            <div class="testi-company">Empresa industrial, Manresa</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Vam tenir un problema greu amb el servidor un divendres a la tarda. Van venir, van recuperar les dades i a dilluns tornàvem a funcionar. Professionals de veritat."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">JP</div>
+          <div>
+            <div class="testi-name">J. Puigdomènech</div>
+            <div class="testi-company">Gestoria, Manresa</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Fa 5 anys que treballem amb Mon Digital i mai hem tingut cap problema sense solució. La tranquil·litat que dona saber que tens un equip de confiança al darrere no té preu."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">AC</div>
+          <div>
+            <div class="testi-name">A. Cerdà</div>
+            <div class="testi-company">Comerç, Bages</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="google-badge">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4l3 3"></path></svg>
+      4,6/5 · 95+ ressenyes a Google · Gener 2026
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ CTA FINAL ══════════════════════════════ -->
+<section id="cta-final">
+  <div class="container">
+    <div class="cta-box">
+      <span class="section-label">Sense compromisos</span>
+      <h2>Fem una revisió gratuïta<br>d'1 hora al teu negoci.</h2>
+      <p>Analitzem el teu sistema IT, detectem riscos i et diem exactament el que necessites. Sense tècnics de vendes, sense argot, sense factura.</p>
+      <div class="cta-btns">
+        <a href="tel:+34938750000" class="btn btn-primary" style="font-size:17px; padding: 18px 36px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.5 10.78 19.79 19.79 0 01.43 2.18 2 2 0 012.42 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.07 6.07l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"></path></svg>
+          Truca'ns ara
+        </a>
+        <a href="https://wa.me/34938750000" class="btn-whatsapp" style="font-size:17px; padding: 18px 36px; border-radius: var(--radius-sm);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          WhatsApp
+        </a>
+        <a href="mailto:info@mdmanresa.com" class="btn btn-ghost-white" style="font-size:17px; padding: 18px 36px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          info@mdmanresa.com
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ FOOTER ═════════════════════════════════ -->
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+        <img src="assets/logo.png" alt="Mon Digital">
+        <p>El soci tecnològic de confiança per a les pymes del Bages. Més de 20 anys garantint la continuïtat digital dels negocis de Manresa i la comarca.</p>
+        <div class="contact-items">
+          <div class="contact-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            Av. Francesc Macià, 50 · 08241 Manresa
+          </div>
+          <div class="contact-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.5 10.78 19.79 19.79 0 01.43 2.18 2 2 0 012.42 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.07 6.07l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"></path></svg>
+            93 875 00 00
+          </div>
+          <div class="contact-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            info@mdmanresa.com
+          </div>
+        </div>
+        <div class="footer-map">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          Veure a Google Maps
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h5>Serveis</h5>
+        <ul>
+          <li><a href="#sectors">Indústria i manufactura</a></li>
+          <li><a href="#sectors">Comerç i hosteleria</a></li>
+          <li><a href="#sectors">Despatxos professionals</a></li>
+          <li><a href="#plans">Plans Activa</a></li>
+          <li><a href="#cta-final">Recuperació de dades</a></li>
+          <li><a href="#cta-final">RGPD i ciberseguretat</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Empresa</h5>
+        <ul>
+          <li><a href="#why">Sobre nosaltres</a></li>
+          <li><a href="#testimonials">Ressenyes</a></li>
+          <li><a href="#cta-final">Contacte</a></li>
+          <li><a href="#cta-final">Revisió IT gratuïta</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Segueix-nos</h5>
+        <div class="footer-socials" style="margin-bottom:16px;">
+          <a href="#" class="social-btn" aria-label="LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white" opacity=".7"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="Facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white" opacity=".7"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" opacity=".7"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="white"/></svg>
+          </a>
+        </div>
+        <p style="font-size:13px; line-height: 1.6;">
+          Mon Digital · mdmanresa.com<br>
+          Manresa, Bages, Catalunya
+        </p>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 Mon Digital — Informàtica Activa, SL · Tots els drets reservats</p>
+      <div class="legal-links">
+        <a href="#">Avís legal</a>
+        <a href="#">Política de privacitat (RGPD)</a>
+        <a href="#">Política de cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════ TWEAKS ═════════════════════════════════ -->
+<div id="tweaks-root"></div>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+const TWEAK_DEFAULS = /*EDITMODE-BEGIN*/{
+  "accentColor": "#E8A020",
+  "darkBlue": "#1A3A6B",
+  "heroStyle": "gradient",
+  "planHighlight": "Pro",
+  "roundness": "medium"
+}/*EDITMODE-END*/;
+
+function ApplyTweaks({ tweaks }) {
+  React.useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty('--orange', tweaks.accentColor);
+    root.style.setProperty('--orange-dk', tweaks.accentColor);
+    root.style.setProperty('--blue-dark', tweaks.darkBlue);
+
+    const radius = { small: '6px', medium: '14px', large: '22px' };
+    root.style.setProperty('--radius-md', radius[tweaks.roundness] || '14px');
+
+    const hero = document.getElementById('hero');
+    if (hero) {
+      if (tweaks.heroStyle === 'gradient') {
+        hero.style.background = `linear-gradient(160deg, #0f2548 0%, ${tweaks.darkBlue} 45%, #1e4a8c 100%)`;
+      } else if (tweaks.heroStyle === 'solid') {
+        hero.style.background = tweaks.darkBlue;
+      }
+    }
+  }, [tweaks]);
+  return null;
+}
+
+function TweaksApp() {
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULS);
+  return (
+    <React.Fragment>
+      <ApplyTweaks tweaks={tweaks} />
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Colors">
+          <TweakColor label="Color d'acció (taronja)" id="accentColor" value={tweaks.accentColor} onChange={v => setTweak('accentColor', v)} />
+          <TweakColor label="Blau principal" id="darkBlue" value={tweaks.darkBlue} onChange={v => setTweak('darkBlue', v)} />
+        </TweakSection>
+        <TweakSection label="Hero">
+          <TweakRadio label="Estil fons hero" id="heroStyle" value={tweaks.heroStyle} options={[{label:'Gradient',value:'gradient'},{label:'Sòlid',value:'solid'}]} onChange={v => setTweak('heroStyle', v)} />
+        </TweakSection>
+        <TweakSection label="Disseny">
+          <TweakRadio label="Cantonades" id="roundness" value={tweaks.roundness} options={[{label:'Sharp',value:'small'},{label:'Medium',value:'medium'},{label:'Round',value:'large'}]} onChange={v => setTweak('roundness', v)} />
+        </TweakSection>
+      </TweaksPanel>
+    </React.Fragment>
+  );
+}
+
+const tweaksRoot = ReactDOM.createRoot(document.getElementById('tweaks-root'));
+tweaksRoot.render(<TweaksApp />);
+</script>
+
+<script>
+  // Header scroll shadow
+  window.addEventListener('scroll', () => {
+    document.getElementById('header').classList.toggle('scrolled', window.scrollY > 10);
+  });
+  // Mobile menu
+  function toggleMobileMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+</script>
+</body>
+</html>
